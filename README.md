@@ -16,13 +16,9 @@ For a **detailed phase-by-phase guide** covering API key setup, chat UI, four me
 
 ### Architecture Diagrams
 
-<img src="docs/assets/Gemini_Generated_Image_adskx9adskx9adsk.png" alt="CTS System Architecture - 5-phase flow" width="800"/>
-
-<img src="docs/assets/Gemini_Generated_Image_v8yomsv8yomsv8yo.png" alt="CTS Architecture Diagram" width="800"/>
 
 ![CTS System Architecture - 5-phase flow](./public/Gemini_Generated_Image_adskx9adskx9adsk.png)
 
-![CTS System Architecture - 5-phase flow](./public/Gemini_Generated_Image_v8yomsv8yomsv8yo.png)
 
 ```
 ┌─────────────────┐     ┌─────────────────────────────────────────────────────────┐     ┌─────────────────┐
@@ -42,6 +38,8 @@ For a **detailed phase-by-phase guide** covering API key setup, chat UI, four me
                          │              └─────────────────────────────────────────┘│
                          └─────────────────────────────────────────────────────────┘
 ```
+
+![CTS System Architecture - 5-phase flow](./public/Gemini_Generated_Image_v8yomsv8yomsv8yo.png)
 
 - **Frontend**: Next.js 14 (App Router), TypeScript, Tailwind CSS
 - **Backend**: FastAPI, Python 3.10+, uvicorn, **LangChain + LangGraph**

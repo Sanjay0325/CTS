@@ -163,15 +163,49 @@ class ChatDataSupabase:
         return [dict(x) for x in rows if x.get("kind") in allowed]
 
     def create_memory_item(
-        self, user_id: str, kind: str, text: str, source: str = "manual"
+        self, user_id: str, kind: str, text: str, source: str = "manual", embedding: list[float] | None = None
     ) -> None:
-        """Create a memory item."""
-        self.sb.table("memory_items").insert({
+        """Create a memory item, optionally with a vector embedding for semantic search."""
+        row = {
             "user_id": user_id,
             "kind": kind,
             "text": text,
             "source": source,
-        }).execute()
+        }
+        if embedding:
+            row["embedding"] = embedding
+            
+        self.sb.table("memory_items").insert(row).execute()
+
+    def search_memory(self, user_id: str, query: str, limit: int = 5) -> list[dict]:
+        """Search memory items semantically using vector similarity. Falls back to recent if unavailable."""
+        if query and query.strip():
+            from src.config import get_embedding_api_key
+            from src.services.document_service import get_embeddings_sync
+            
+            api_key = get_embedding_api_key()
+            if api_key:
+                try:
+                    embeddings = get_embeddings_sync([query.strip()], api_key)
+                    if embeddings and embeddings[0]:
+                        emb = embeddings[0]
+                        r = self.sb.rpc(
+                            "match_memory_items",
+                            {
+                                "query_embedding": emb,
+                                "filter_user_id": str(user_id),
+                                "match_count": limit,
+                                "match_threshold": 0.4, # Slightly lower threshold for memory recall
+                            },
+                        ).execute()
+                        if r.data:
+                            allowed = {"summary", "fact", "preference"}
+                            return [dict(x) for x in r.data if x.get("kind") in allowed]
+                except Exception as e:
+                    logger.warning(f"Memory semantic search failed, falling back to recent: {e}")
+                    
+        # Fallback to recent memory
+        return self.get_recent_memory(user_id, limit)
 
     def search_rag(self, user_id: str, collection_ids: list[str], query: str, limit: int = 5) -> list[dict]:
         """Search document chunks in selected collections."""
