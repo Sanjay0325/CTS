@@ -1,0 +1,10 @@
+{
+  "name": "cts",
+  "private": true,
+  "scripts": {
+    "dev:web": "pnpm --filter cts-web dev",
+    "dev:api": "cd services/api && python -m uvicorn src.main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:mcp": "cd mcp-servers/demo && python server.py",
+    "dev:mcp:all": "powershell -ExecutionPolicy Bypass -File scripts/start_all_mcps.ps1"
+  }
+}

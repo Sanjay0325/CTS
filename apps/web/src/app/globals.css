@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #0f0f0f;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #252525;
+  --text-primary: #e8e8e8;
+  --text-secondary: #a0a0a0;
+  --accent: #10a37f;
+  --accent-hover: #0d8b6b;
+  --border: #2d2d2d;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* Mermaid diagram in trace - dark theme */
+.mermaid-container svg {
+  max-width: 100%;
+  height: auto;
+}
+.mermaid-container .node rect,
+.mermaid-container .node circle {
+  fill: var(--bg-tertiary);
+  stroke: var(--accent);
+}
+.mermaid-container .edgePath path {
+  stroke: var(--text-secondary);
+}

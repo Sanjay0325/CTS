@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "notes": {
+      "command": "python",
+      "args": ["${workspaceFolder}/mcp-servers/notes/server.py", "--stdio"],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
+    }
+  }
+}
